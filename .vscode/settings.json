@@ -1,6 +1,6 @@
 {
-     "editor.fontFamily": "Operator Mono",
-     "editor.fontSize": 16.5,
+     "editor.fontFamily": "Operator Mono, Consolas, 'Courier New', monospace\"",
+     "editor.fontSize": 17,
      "editor.fontWeight": "bold",
      "editor.fontLigatures": true
 }
