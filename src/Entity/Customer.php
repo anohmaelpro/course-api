@@ -17,7 +17,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *      "pagination_enabled"=true
  *  }
  * )
- * @ApiFilter(SearchFilter::class,  properties={"firstName", "lastName", "company"})
+ * @ApiFilter(SearchFilter::class,  properties={"firstName": "word_start", "lastName":"partial", "company":"word_start"})
  */
 class Customer
 {
