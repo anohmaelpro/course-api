@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *      "pagination_enabled"=true
  *  }
  * )
+ * @ApiFilter(SearchFilter::class, properties={"firstName", "lastName", "company"})
  */
 class Customer
 {
