@@ -8,6 +8,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
@@ -18,6 +19,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *  }
  * )
  * @ApiFilter(SearchFilter::class,  properties={"firstName": "word_start", "lastName":"partial", "company":"word_start"})
+ * @ApiFilter(OrderFilter::class, )
  */
 class Customer
 {
