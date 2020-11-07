@@ -11,7 +11,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
  * @ApiResource(
  * attributes={
  *      "pagination_enabled"=true,
- *      "items_per_page"=20
+ *      "items_per_page"=20,
+ *      "order"={"sentAt": "desc" }
  *  }
  * )
  */
