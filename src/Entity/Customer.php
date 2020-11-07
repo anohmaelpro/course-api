@@ -10,7 +10,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=CustomerRepository::class)
- * @ApiResource
+ * @ApiResource(
+ *  attributes={
+ *      "pagination_enabled"=true
+ *  }
+ * )
  */
 class Customer
 {
