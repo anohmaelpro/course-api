@@ -15,6 +15,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *      "order"={"sentAt": "desc" }
  *  }
  * )
+ * @ApiFilter
  */
 class Invoice
 {
