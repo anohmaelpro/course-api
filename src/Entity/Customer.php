@@ -3,13 +3,14 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\CustomerRepository;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Repository\CustomerRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
@@ -39,6 +40,8 @@ class Customer
     private $id;
 
     /**
+     * @Assert\NotBlank(message="Ce champ est obligatoire, Veiller saisir votre Firstname s'il vous plait")
+     * @Assert\Length(min="4", minMessage="Le fistName est trop court. 2 caractères minimum,  max="15", maxMessage="Le lastName est trop long. 20 caractères maximum")
      * @ORM\Column(type="string", length=255)
      * @Groups({"customers_read", "invoices_read"})
      */
