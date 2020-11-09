@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\InvoiceRepository;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
@@ -15,7 +17,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *      "pagination_enabled"=true,
  *      "items_per_page"=20,
  *      "order"={"sentAt": "desc" }
- *  }
+ *  },
+ *  normalizationContext={"groups"={"invoices_read"}}
  * )
  * @ApiFilter(OrderFilter::class, properties={"amout", "sentAt"})
  */
@@ -25,34 +28,51 @@ class Invoice
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"invoices_read", "customers_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"invoices_read", "customers_read"})
      */
     private $amout;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"invoices_read", "customers_read"})
      */
     private $sentAt;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"invoices_read", "customers_read"})
      */
     private $status;
 
     /**
      * @ORM\ManyToOne(targetEntity=Customer::class, inversedBy="invoicesCustomer")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"invoices_read"})
      */
     private $customer;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"invoices_read", "customers_read"})
      */
     private $chrono;
+
+
+    /**
+     * cette foonction permet de savoir quel user est rattacher à une factures de customer
+     *  @Groups({"invoices_read"})
+     * @return User
+     */
+    public function getUserInvoice():User
+    {
+        return $this->customer->getUserCustomer();
+    }
 
     public function getId(): ?int
     {

@@ -16,10 +16,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * @ORM\Entity(repositoryClass=CustomerRepository::class)
  * @ApiResource(
  *  attributes={"pagination_enabled"=true},
- *  normalizationContext={"groups"={"customer_read"}}
+ *  normalizationContext={"groups"={"customers_read"}}
  * )
- * @ApiFilter(SearchFilter::class,  properties={"firstName": "word_start", "lastName":"partial", "company":"word_start"})
- * @ApiFilter(OrderFilter::class, )
+ * @ApiFilter(SearchFilter::class)
+ * @ApiFilter(OrderFilter::class )
  */
 class Customer
 {
@@ -27,31 +27,31 @@ class Customer
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"customers_read"})
+     * @Groups({"customers_read", "invoices_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"customers_read"})
+     * @Groups({"customers_read", "invoices_read"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"customers_read"})
+     * @Groups({"customers_read", "invoices_read"})
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"customers_read"})
+     * @Groups({"customers_read", "invoices_read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"customers_read"})
+     * @Groups({"customers_read", "invoices_read"})
      */
     private $company;
 
@@ -63,7 +63,7 @@ class Customer
     private $invoicesCustomer;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="customurUser")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="customerUser")
      * @Groups({"customers_read"})
      */
     private $userCustomer;
@@ -71,6 +71,31 @@ class Customer
     public function __construct()
     {
         $this->invoicesCustomer = new ArrayCollection();
+    }
+
+
+    /**
+     * cette fonction retourne  un float qui est me total des factures amount  = amout 
+     * @Groups({"customers_read"})
+     * @return float
+     */
+    public function getTotalAmount():float
+    {
+        return array_reduce($this->invoicesCustomer->toArray(), function($total, $invoicesCustomer){
+            return $total + $invoicesCustomer->getAmout();
+        }, 0);
+    }
+
+    /**
+     * cette fonction permet de récupéré la somme dû du client
+     * @Groups({"customers_read"})
+     * @return float
+     */
+    public function getUnPaidAmount():float
+    {
+        return array_reduce($this->invoicesCustomer->toArray(), function($total, $invoicesCustomer){
+            return $total + ($invoicesCustomer->getStatus() === "PAID" || $invoicesCustomer->getStatus() === "CANCELLED" ? 0 : $invoicesCustomer->getAmout()) ;
+        }, 0);
     }
 
     public function getId(): ?int

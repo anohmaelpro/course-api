@@ -7,6 +7,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -19,16 +20,19 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"customers_read", "invoices_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"customers_read", "invoices_read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"customers_read"})
      */
     private $roles = [];
 
@@ -40,22 +44,24 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"customers_read", "invoices_read"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"customers_read", "invoices_read"})
      */
     private $lastName;
 
     /**
      * @ORM\OneToMany(targetEntity=Customer::class, mappedBy="userCustomer")
      */
-    private $customurUser;
+    private $customerUser;
 
     public function __construct()
     {
-        $this->customurUser = new ArrayCollection();
+        $this->customerUser = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -163,27 +169,27 @@ class User implements UserInterface
     /**
      * @return Collection|Customer[]
      */
-    public function getCustomurUser(): Collection
+    public function getCustomerUser(): Collection
     {
-        return $this->customurUser;
+        return $this->customerUser;
     }
 
-    public function addCustomurUser(Customer $customurUser): self
+    public function addCustomerUser(Customer $customerUser): self
     {
-        if (!$this->customurUser->contains($customurUser)) {
-            $this->customurUser[] = $customurUser;
-            $customurUser->setUserCustomer($this);
+        if (!$this->customerUser->contains($customerUser)) {
+            $this->customerUser[] = $customerUser;
+            $customerUser->setUserCustomer($this);
         }
 
         return $this;
     }
 
-    public function removeCustomurUser(Customer $customurUser): self
+    public function removeCustomerUser(Customer $customerUser): self
     {
-        if ($this->customurUser->removeElement($customurUser)) {
+        if ($this->customerUser->removeElement($customerUser)) {
             // set the owning side to null (unless already changed)
-            if ($customurUser->getUserCustomer() === $this) {
-                $customurUser->setUserCustomer(null);
+            if ($customerUser->getUserCustomer() === $this) {
+                $customerUser->setUserCustomer(null);
             }
         }
 
