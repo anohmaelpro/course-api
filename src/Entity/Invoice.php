@@ -23,8 +23,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *          "path"="/invoices/{id}/increment",
  *          "controller"="App\Controller\invoiceIncrementationController",
  *          "swagger_context"={
- *              "summary"="Incrément une facture",
- *              "description"="Incrémente le chrono d'une factiure donnée"} 
+ *              "summary"="Incrémente une facture",
+ *              "description"="Incrémente le chrono d'une facture donnée"} 
  *      }
  *  },
  *  subresourceOperations={
