@@ -113,7 +113,8 @@ class Invoice
         return $this->amout;
     }
 
-    public function setAmout(float $amout): self
+    // le type float à été rétirer afin de permettre que la validation se fasse par API resource, ainsi un message d'erreur plus évident est possible.
+    public function setAmout( $amout): self
     {
         $this->amout = $amout;
 
@@ -125,7 +126,8 @@ class Invoice
         return $this->sentAt;
     }
 
-    public function setSentAt(\DateTimeInterface $sentAt): self
+    // le type \DateTime à été rétirer afin de permettre que la validation se fasse par API resource, ainsi un message d'erreur plus évident est possible.
+    public function setSentAt($sentAt): self
     {
         $this->sentAt = $sentAt;
 
@@ -161,7 +163,8 @@ class Invoice
         return $this->chrono;
     }
 
-    public function setChrono(int $chrono): self
+    // le type int à été rétirer afin de permettre que la validation se fasse par API resource, ainsi un message d'erreur plus évident est possible.
+    public function setChrono($chrono): self
     {
         $this->chrono = $chrono;
 
