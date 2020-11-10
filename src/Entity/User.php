@@ -19,7 +19,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     message="Cette email existe déjà ! Veiller saisir une nouvelle adresse mail"
  * )
  * @ApiResource(
- *      denormalizationContext={"disable_type_enforcement"=true}
+ *      denormalizationContext={"disable_type_enforcement"=true},
+ *      normalizationContext={"groups"={"users_read"}}
  * )
  */
 class User implements UserInterface
@@ -28,13 +29,13 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"customers_read", "invoices_read", "invoices_subresource"})
+     * @Groups({"customers_read", "invoices_read", "invoices_subresource", "users_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"customers_read", "invoices_read", "invoices_subresource"})
+     * @Groups({"customers_read", "invoices_read", "invoices_subresource", "users_read"})
      * @Assert\Email(message="Votre Email  {{ value }} est invalide")
      * @Assert\NotBlank(message="Ce champ est obligatoire, Veiller saisir votre email s'il vous plait")
      */
@@ -42,7 +43,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="json")
-     * @Groups({"customers_read", "invoices_subresource"})
+     * @Groups({"customers_read", "invoices_subresource", "users_read"})
      */
     private $roles = [];
 
@@ -55,7 +56,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"customers_read", "invoices_read", "invoices_subresource"})
+     * @Groups({"customers_read", "invoices_read", "invoices_subresource", "users_read"})
      * @Assert\NotBlank(message="Ce champ est obligatoire, Veiller saisir votre prénom s'il vous plait")
      * @Assert\Length(min="2", minMessage="Votre prénom saisie est trop court. 2 caractères minimum",  max="255", maxMessage="Le prénom est trop long. 20 caractères maximum")
      */
@@ -63,7 +64,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"customers_read", "invoices_read", "invoices_subresource"})
+     * @Groups({"customers_read", "invoices_read", "invoices_subresource", "users_read"})
      * @Assert\NotBlank(message="Ce champ est obligatoire, Veiller saisir votre Nom s'il vous plait")
      * @Assert\Length(min="2", minMessage="Votre Nom saisie est trop court. 2 caractères minimum",  max="20", maxMessage="Le Nom est trop long. 20 caractères maximum")
      */
