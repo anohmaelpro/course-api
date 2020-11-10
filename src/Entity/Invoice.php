@@ -7,7 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\InvoiceRepository;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
@@ -32,8 +34,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *                     "normalization_context"={"groups"={"invoices_subresource"}}
  *          }
  *  },
- *  normalizationContext={"groups"={"invoices_read"}}
+ *  normalizationContext={"groups"={"invoices_read"}},
+ *  denormalizationContext={"disable_type_enforcement"=true}
  * )
+ * 
  * @ApiFilter(OrderFilter::class, properties={"amout", "sentAt"})
  */
 class Invoice
@@ -49,18 +53,25 @@ class Invoice
     /**
      * @ORM\Column(type="float")
      * @Groups({"invoices_read", "customers_read", "invoices_subresource"})
+     * @Assert\NotBlank(message="Ce champ est obligatoire, Veiller saisir le montant s'il vous plait")
+     * @Assert\Type(type="numeric" , message="Le montant doit être un numérique")
+     * @Assert\Positive(message="Cette valeur  doit être positive et non nulle")
      */
     private $amout;
 
     /**
      * @ORM\Column(type="datetime")
      * @Groups({"invoices_read", "customers_read", "invoices_subresource"})
+     * @Assert\NotBlank(message="Ce champ est obligatoire, Veiller saisir la date au format YYYY-MM-DD s'il vous plait")
+     * @Assert\DateTime(message="Il faut entrer une date format Année-Mois-Jour")
      */
     private $sentAt;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"invoices_read", "customers_read", "invoices_subresource"})
+     * @Assert\NotBlank(message="Ce champ est obligatoire, Veiller saisir le status de la facture s'il vous plait soit  SENT, CANCELLED, PAID")
+     * @Assert\Choice(choices={"SENT","PAID","CANCELLED"}, message="le statut doit être SENT, CANCELLED, PAID")
      */
     private $status;
 
@@ -68,12 +79,16 @@ class Invoice
      * @ORM\ManyToOne(targetEntity=Customer::class, inversedBy="invoicesCustomer")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"invoices_read"})
+     * @Assert\NotBlank(message="Ce champ est obligatoire, Veiller entrer un customer s'il vous plait")
      */
     private $customer;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"invoices_read", "customers_read", "invoices_subresource"})
+     * @Assert\NotBlank(message="Ce champ est obligatoire, Veiller saisir le numéro de l'invoice s'il vous plait")
+     * @Assert\Positive(message="Cette valeur  doit être positive et non nulle")
+     * @Assert\Type(type="integer", message="La valeur doit être un entier positif")
      */
     private $chrono;
 

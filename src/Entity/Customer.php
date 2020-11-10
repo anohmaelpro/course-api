@@ -9,8 +9,10 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
-use App\Repository\CustomerRepository;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Repository\CustomerRepository;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
@@ -40,22 +42,26 @@ class Customer
     private $id;
 
     /**
-     * @Assert\NotBlank(message="Ce champ est obligatoire, Veiller saisir votre Firstname s'il vous plait")
-     * @Assert\Length(min="4", minMessage="Le fistName est trop court. 2 caractères minimum,  max="15", maxMessage="Le lastName est trop long. 20 caractères maximum")
      * @ORM\Column(type="string", length=255)
      * @Groups({"customers_read", "invoices_read"})
+     * @Assert\NotBlank(message="Ce champ est obligatoire, Veiller saisir votre prénom s'il vous plait")
+     * @Assert\Length(min="2", minMessage="Votre prénom saisie est trop court. 2 caractères minimum",  max="255", maxMessage="Le prénom est trop long. 20 caractères maximum")
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"customers_read", "invoices_read"})
+     * @Assert\NotBlank(message="Ce champ est obligatoire, Veiller saisir votre Nom s'il vous plait")
+     * @Assert\Length(min="2", minMessage="Votre Nom saisie est trop court. 2 caractères minimum",  max="20", maxMessage="Le Nom est trop long. 20 caractères maximum")
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"customers_read", "invoices_read"})
+     * @Assert\Email(message="Votre Email  {{ value }} est invalide")
+     * @Assert\NotBlank(message="Ce champ est obligatoire, Veiller saisir votre email s'il vous plait")
      */
     private $email;
 
@@ -76,6 +82,7 @@ class Customer
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="customerUser")
      * @Groups({"customers_read"})
+     * @Assert\NotBlank(message="Ce champ est obligatoire, Veiller sélectionner ou entrer un User")
      */
     private $userCustomer;
 
