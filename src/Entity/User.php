@@ -8,12 +8,19 @@ use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @ApiResource
+ * @UniqueEntity(
+ *     fields={"email"},
+ *     message="Cette email existe déjà ! Veiller saisir une nouvelle adresse mail"
+ * )
+ * @ApiResource(
+ *      denormalizationContext={"disable_type_enforcement"=true}
+ * )
  */
 class User implements UserInterface
 {
@@ -28,6 +35,8 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Groups({"customers_read", "invoices_read", "invoices_subresource"})
+     * @Assert\Email(message="Votre Email  {{ value }} est invalide")
+     * @Assert\NotBlank(message="Ce champ est obligatoire, Veiller saisir votre email s'il vous plait")
      */
     private $email;
 
@@ -40,18 +49,23 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Ce champ est obligatoire, Veiller saisir votre mot de passe s'il vous plait")
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"customers_read", "invoices_read", "invoices_subresource"})
+     * @Assert\NotBlank(message="Ce champ est obligatoire, Veiller saisir votre prénom s'il vous plait")
+     * @Assert\Length(min="2", minMessage="Votre prénom saisie est trop court. 2 caractères minimum",  max="255", maxMessage="Le prénom est trop long. 20 caractères maximum")
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"customers_read", "invoices_read", "invoices_subresource"})
+     * @Assert\NotBlank(message="Ce champ est obligatoire, Veiller saisir votre Nom s'il vous plait")
+     * @Assert\Length(min="2", minMessage="Votre Nom saisie est trop court. 2 caractères minimum",  max="20", maxMessage="Le Nom est trop long. 20 caractères maximum")
      */
     private $lastName;
 
@@ -99,7 +113,7 @@ class User implements UserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles = ['ROLE_USER'];
 
         return array_unique($roles);
     }

@@ -63,7 +63,7 @@ class Invoice
      * @ORM\Column(type="datetime")
      * @Groups({"invoices_read", "customers_read", "invoices_subresource"})
      * @Assert\NotBlank(message="Ce champ est obligatoire, Veiller saisir la date au format YYYY-MM-DD s'il vous plait")
-     * @Assert\DateTime(message="Il faut entrer une date format Année-Mois-Jour")
+     * @Assert\type( type="\DateTime", message="Il faut entrer une date format Année-Mois-Jour")
      */
     private $sentAt;
 
