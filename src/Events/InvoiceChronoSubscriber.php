@@ -49,7 +49,7 @@ class InvoiceChronoSubscriber implements EventSubscriberInterface
 
           
           if (($resultEvent instanceof Invoice)&&($methodEvent === "POST")){
-               $invoiceEvent = $resultEvent ;
+               $invoiceEvent = $resultEvent;
 
                // get users who call the event and linked to the customer who wants create new invoice
                $userEvent = $this->security->getUser();
