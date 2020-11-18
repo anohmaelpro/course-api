@@ -16,7 +16,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * @ORM\Entity(repositoryClass=InvoiceRepository::class)
  * @ApiResource(
  *      attributes={
- *          "pagination_enabled"=true,
+ *          "pagination_enabled"=false,
  *          "items_per_page"=20,
  *          "order"={"sentAt": "desc" }
  *      },

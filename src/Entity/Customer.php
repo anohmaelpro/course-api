@@ -3,23 +3,28 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CustomerRepository;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
-use App\Repository\CustomerRepository;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
+/** 
+ * @UniqueEntity(
+ *     fields={"email"},
+ *     message="Cette email existe déjà ! Veiller saisir une nouvelle adresse mail"
+ * )
  * @ORM\Entity(repositoryClass=CustomerRepository::class)
  * @ApiResource(
- *      attributes={"pagination_enabled"=true},
+ *      attributes={"pagination_enabled"=false},
  *      normalizationContext={"groups"={"customers_read"}},
  *      subresourceOperations={
  *              "invoices_customers_get_subresource" = {"path"="/customers/{id}/invoices_customers"}
@@ -58,7 +63,7 @@ class Customer
     private $lastName;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      * @Groups({"customers_read", "invoices_read"})
      * @Assert\Email(message="Votre Email  {{ value }} est invalide")
      * @Assert\NotBlank(message="Ce champ est obligatoire, Veiller saisir votre email s'il vous plait")

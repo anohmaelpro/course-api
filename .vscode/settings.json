@@ -1,6 +1,20 @@
 {
      "editor.fontFamily": "Operator Mono, Consolas, 'Courier New', monospace\"",
-     "editor.fontSize": 17,
+     "editor.fontSize": 18,
      "editor.fontWeight": "bold",
-     "editor.fontLigatures": true
+     "editor.fontLigatures": true,
+     "editor.tabSize": 10,
+     "editor.autoClosingQuotes": "always",
+     "editor.wordWrapColumn": 250,
+     "editor.defaultFormatter": "esbenp.prettier-vscode",
+     "[javascript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode",
+          "editor.formatOnSave": false
+     },
+     "diffEditor.codeLens": true,
+     "editor.minimap.maxColumn": 100,
+     "editor.suggest.shareSuggestSelections": true,
+     "files.autoSave": "afterDelay",
+     "editor.wordWrap": "wordWrapColumn",
+     "files.autoSaveDelay": 2000
 }
