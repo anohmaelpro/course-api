@@ -1,7 +1,17 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
+import LoginApi from '../services/LoginApi';
 
 
 const Navbar = (props) => {
+
+
+     const handleLogout = () => {
+          LoginApi.userLogout()
+          Redirect()
+     }
+
+
      return (
           <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                <a className="navbar-brand" href="#">API PLATEFORM</a>
@@ -21,13 +31,18 @@ const Navbar = (props) => {
                     </ul>
                     <ul className="navbar-nav ml-auto">
                          <li className="nav-item">
-                              <a href="#" className="nav-link">Inscription</a>
+                              <a href="#/register" className="nav-link">Inscription</a>
                          </li>
                          <li className="nav-item">
-                              <a href="#" className="btn btn-light">Log In</a>
+                              <a href="#/login" className="btn btn-light">Log In</a>
                          </li>
                          <li className="nav-item">
-                              <a href="#" className="btn btn-light">Logout</a>
+                              <button
+                                   className="btn btn-light"
+                                   onClick={handleLogout}
+                              >
+                                   Logout
+                              </button>
                          </li>
                     </ul>
                </div>
