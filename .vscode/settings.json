@@ -3,7 +3,7 @@
      "editor.fontSize": 18,
      "editor.fontWeight": "bold",
      "editor.fontLigatures": true,
-     "editor.tabSize": 10,
+     "editor.tabSize": 5,
      "editor.autoClosingQuotes": "always",
      "editor.wordWrapColumn": 250,
      "editor.defaultFormatter": "esbenp.prettier-vscode",
